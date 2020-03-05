@@ -1,0 +1,31 @@
+
+#SuperPagination {
+  margin: 1em;
+  font-weight: normal;
+  color: #220e19;
+}
+
+.SuperPaginationContainer, .pageContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.SuperPaginationContainer div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: .4em;
+  padding: .5em;
+
+  border: .1em solid #968089;
+}
+
+#SuperPagination .active {
+  font-size: 1.3em;
+  background-color: #e7a9b1;
+}
+
