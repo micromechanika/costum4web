@@ -1,4 +1,4 @@
-const  SuperPagination = require("@models/SuperPagination");
+const SuperPagination = require("@models/SuperPagination");
 
 require('@assets/css/body.scss');
 require('@assets/css/superpagination.scss');
@@ -19,7 +19,7 @@ const preloader = `<div class="preloader" ></div>`
 let ResponceStatus = null
 let data = []
 let begin = 0
-const step = 20
+const step = 5
 let end = 1 * step
 let activePage = 1
 
@@ -74,7 +74,7 @@ function sorteg(data, param = 'id', {asc = true} = {}) {
 
 fetch('json/db.json')
     .then(responce => {
-          return responce.json()
+        return responce.json()
     })
     .then(responce => {
         data = responce.slice()
@@ -99,27 +99,8 @@ const getData = setInterval(() => {
             pageBuilder(data)
         }, false)
 
-        thead.addEventListener('dblclick', e => {
-            switch (true) {
-                case e.target.classList.contains('id'):
-                    sorteg(data, param = 'id')
-                    break;
-                case e.target.classList.contains('title'):
-                    sorteg(data, param = 'title')
-                    break;
-                case e.target.classList.contains('price'):
-                    sorteg(data, param = 'price')
-                    break;
-                case e.target.classList.contains('color'):
-                    sorteg(data, param = 'color')
-                    break;
-                case e.target.classList.contains('department'):
-                    sorteg(data, param = 'department')
-                    break;
-            }
-        }, false)
 
-        thead.addEventListener('click', e => {
+        function onceClick(e) {
             switch (true) {
                 case e.target.classList.contains('id'):
                     sorteg(data, param = 'id', {asc: false})
@@ -137,13 +118,47 @@ const getData = setInterval(() => {
                     sorteg(data, param = 'department', {asc: false})
                     break;
             }
-        }, false)
+        }
+
+        function doubleClick(e) {
+            switch (true) {
+                case e.target.classList.contains('id'):
+                    sorteg(data, param = 'id')
+                    break;
+                case e.target.classList.contains('title'):
+                    sorteg(data, param = 'title')
+                    break;
+                case e.target.classList.contains('price'):
+                    sorteg(data, param = 'price')
+                    break;
+                case e.target.classList.contains('color'):
+                    sorteg(data, param = 'color')
+                    break;
+                case e.target.classList.contains('department'):
+                    sorteg(data, param = 'department')
+                    break;
+            }
+        }
+
+        function tripleClick(e) {
+            activePage = page.active
+            pageBuilder(data)
+        }
 
         thead.addEventListener('click', e => {
-            if (e.detail === 3) {
-                activePage = page.active
-                pageBuilder(data)
+
+            switch (true) {
+                case e.detail === 1:
+                    onceClick(e)
+                    break;
+                case e.detail === 2:
+                    doubleClick(e)
+                    break
+                case e.detail === 3:
+                    tripleClick(e)
+                    break
             }
+
         }, false)
 
         search.addEventListener('keyup', e => {
@@ -160,7 +175,6 @@ const getData = setInterval(() => {
         clearInterval(getData)
     }
 }, 20)
-
 
 
 
