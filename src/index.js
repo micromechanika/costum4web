@@ -145,26 +145,37 @@ const getData = setInterval(() => {
             pageBuilder(data)
         }
 
-        let click = null;
+
+        let clickCount = 0;
         function myClick() {
-             click += 1
-            return click
+          clickCount ++;
         }
 
+        const promise = new Promise((resolve, reject) => {
+            resolve()
+            reject(new Error('in myClick function something broke'))
+        })
+
         thead.addEventListener('click', e => {
-            myClick()
-            switch (true) {
-                case click === 1:
-                    onceClick(e)
-                    break;
-                case click === 2:
-                    doubleClick(e)
-                    break
-                case click === 3:
-                    click=null
-                    tripleClick()
-                    break
-            }
+
+            promise
+                .then(myClick())
+                .then(() => {
+                    switch (true) {
+                        case clickCount === 1:
+                            onceClick(e)
+                            break;
+                        case clickCount === 2:
+                            doubleClick(e)
+                            break
+                        case clickCount === 3:
+                            clickCount = 0
+                            tripleClick()
+                            break
+                    }
+                })
+                .catch(e => console.error('click Error'))
+
 
         }, false)
 
