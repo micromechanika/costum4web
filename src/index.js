@@ -140,22 +140,29 @@ const getData = setInterval(() => {
             }
         }
 
-        function tripleClick(e) {
+        function tripleClick() {
             activePage = page.active
             pageBuilder(data)
         }
 
-        thead.addEventListener('click', e => {
+        let click = null;
+        function myClick() {
+             click += 1
+            return click
+        }
 
+        thead.addEventListener('click', e => {
+            myClick()
             switch (true) {
-                case e.detail === 1:
+                case click === 1:
                     onceClick(e)
                     break;
-                case e.detail === 2:
+                case click === 2:
                     doubleClick(e)
                     break
-                case e.detail === 3:
-                    tripleClick(e)
+                case click === 3:
+                    click=null
+                    tripleClick()
                     break
             }
 
