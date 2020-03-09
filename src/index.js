@@ -140,24 +140,42 @@ const getData = setInterval(() => {
             }
         }
 
-        function tripleClick(e) {
+        function tripleClick() {
             activePage = page.active
             pageBuilder(data)
         }
 
+
+        let clickCount = 0;
+        function myClick() {
+          clickCount ++;
+        }
+
+        const promise = new Promise((resolve, reject) => {
+            resolve()
+            reject(new Error('in myClick function something broke'))
+        })
+
         thead.addEventListener('click', e => {
 
-            switch (true) {
-                case e.detail === 1:
-                    onceClick(e)
-                    break;
-                case e.detail === 2:
-                    doubleClick(e)
-                    break
-                case e.detail === 3:
-                    tripleClick(e)
-                    break
-            }
+            promise
+                .then(myClick())
+                .then(() => {
+                    switch (true) {
+                        case clickCount === 1:
+                            onceClick(e)
+                            break;
+                        case clickCount === 2:
+                            doubleClick(e)
+                            break
+                        case clickCount === 3:
+                            clickCount = 0
+                            tripleClick()
+                            break
+                    }
+                })
+                .catch(e => console.error('click Error'))
+
 
         }, false)
 
